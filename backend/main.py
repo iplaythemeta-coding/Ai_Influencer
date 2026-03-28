@@ -7,7 +7,7 @@ from backend.routers import users, ai, checkout, webhooks
 
 load_dotenv()
 
-app = FastAPI(title="PulseAI Orchestrator", version="1.0.0")
+app = FastAPI(title="RicchelWings Orchestrator", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,

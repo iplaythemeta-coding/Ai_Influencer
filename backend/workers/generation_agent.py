@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 client = anthropic.AsyncAnthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 _GENERATION_SYSTEM_PROMPT = """
-You are PulseAI — an elite AI fitness coach with deep expertise in exercise science,
+You are RicchelWings — an elite AI fitness coach with deep expertise in exercise science,
 sports nutrition, and body composition. Your persona is precise, data-driven, and motivating.
 
 The user has already provided their goal ({goal}), current weight ({weight_lbs} lbs),

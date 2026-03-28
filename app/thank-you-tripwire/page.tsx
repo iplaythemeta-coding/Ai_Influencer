@@ -113,7 +113,7 @@ export default function ThankYouTripwirePage() {
                     {[
                       "AI-Generated Macro Splitting specific to your body type",
                       "7-Day 'Metabolic Reset' Meal Plan",
-                      "PulseAI's Top 5 Post-Workout Supplements Database",
+                      "RicchelWings's Top 5 Post-Workout Supplements Database",
                       "Cheat-Day Damage Control Protocols",
                     ].map((feature, i) => (
                       <li key={i} className="flex gap-3 text-muted-foreground">

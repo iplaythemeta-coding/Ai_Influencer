@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PulseAI — Your AI Fitness Coach",
+  title: "RicchelWings — Your AI Fitness Coach",
   description: "Stop guessing. Start optimizing. Get science-backed fitness and nutrition plans personalized by AI.",
 };
 

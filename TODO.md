@@ -78,14 +78,14 @@
 
 - [ ] Create `backend/workers/prompt_router.py`
 - [ ] Router makes a fast Claude call to classify prompt as `fitness_related` or `out_of_bounds`
-- [ ] If `out_of_bounds`: immediately return canned PulseAI persona refusal, do NOT enqueue job
+- [ ] If `out_of_bounds`: immediately return canned RicchelWings persona refusal, do NOT enqueue job
 - [ ] If `fitness_related`: pass to generation worker
 - [ ] System prompt for router must be strict — no exceptions for "educational" or "hypothetical" framing
 
 ### Generation Agent
 
 - [ ] Create `backend/workers/generation_agent.py`
-- [ ] Define system prompt: PulseAI persona, fitness context, structured JSON output schema
+- [ ] Define system prompt: RicchelWings persona, fitness context, structured JSON output schema
 - [ ] Enforce JSON structured output — parse with Pydantic, reject malformed responses
 - [ ] Output schema: `{ workout_plan: string, nutrition_guidelines: string, generated_at: ISO8601 }`
 
@@ -169,12 +169,12 @@
 
 ---
 
-## Phase 8 — PulseAI Persona
+## Phase 8 — RicchelWings Persona
 
 - [ ] Train LoRA in kohya_ss from curated dataset (`D:/AI/training/character_name/`)
 - [ ] Generate character images in ComfyUI
 - [ ] Add avatar to opt-in page, thank-you page, and dashboard
-- [ ] Write "about PulseAI" credibility blurb
+- [ ] Write "about RicchelWings" credibility blurb
 - [ ] (Optional) Generate short-form video content for social traffic
 
 ---

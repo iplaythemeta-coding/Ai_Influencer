@@ -9,7 +9,7 @@ from uuid import UUID, uuid4
 # ==========================================
 
 class FunnelState(str, Enum):
-    """Strict linear progression through the PulseAI funnel."""
+    """Strict linear progression through the RicchelWings funnel."""
     LEAD = "lead"                                # Received Day 0 Free PDF
     TRIPWIRE_OFFERED = "tripwire_offered"        # Reached Day 7
     TRIPWIRE_ACTIVE = "tripwire_active"          # Purchased $17 Tier

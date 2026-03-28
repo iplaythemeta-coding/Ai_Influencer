@@ -22,7 +22,7 @@ async def send_welcome_email(email: str, first_name: str):
                 <p><a href="{PDF_URL}" style="background:#00e5ff;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;">
                     Download Your PDF Now
                 </a></p>
-                <p>— PulseAI</p>
+                <p>— RicchelWings</p>
             """,
         })
     except Exception as e:
@@ -34,8 +34,8 @@ async def send_purchase_confirmation(email: str, first_name: str, product: str):
     """Fires after a confirmed Stripe purchase."""
     product_names = {
         "tripwire": "AI Nutrition Blueprint",
-        "pro": "PulseAI Pro",
-        "ultimate": "PulseAI Ultimate",
+        "pro": "RicchelWings Pro",
+        "ultimate": "RicchelWings Ultimate",
     }
     product_label = product_names.get(product, product)
 
@@ -51,7 +51,7 @@ async def send_purchase_confirmation(email: str, first_name: str, product: str):
                     style="background:#00e5ff;color:#000;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;">
                     Go to Dashboard
                 </a></p>
-                <p>— PulseAI</p>
+                <p>— RicchelWings</p>
             """,
         })
     except Exception as e:
