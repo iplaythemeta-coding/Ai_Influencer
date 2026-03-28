@@ -1,39 +1,70 @@
-// Stubbed DB Models for Prototype
+// TypeScript mirrors of backend/schemas/models.py
+// These types are the contract between Next.js and FastAPI.
+// Never add business logic here — this file is types only.
 
-export interface User {
-  id: string;
-  name: string;
+export type FunnelState =
+  | "lead"
+  | "tripwire_offered"
+  | "tripwire_active"
+  | "pro_active"
+  | "ultimate_active"
+  | "churned";
+
+export type FitnessGoal = "cut" | "bulk" | "recomp";
+
+export type JobStatus = "pending" | "running" | "complete" | "failed";
+
+// POST /api/users/optin
+export interface OptInPayload {
   email: string;
-  createdAt: Date;
+  first_name: string;
+  goal: FitnessGoal;
+  current_weight_lbs: number;
+  age: number;
 }
 
-export interface FunnelState {
-  userId: string;
-  optInCompleted: boolean;
-  tripwirePurchased: boolean;
-  coreProductTier: 'none' | 'starter' | 'pro' | 'ultimate';
+export interface OptInResponse {
+  user_id: string;
+  funnel_state: FunnelState;
 }
 
-export const mockDb = {
-  users: [] as User[],
-  funnelStates: [] as FunnelState[],
-  
-  async saveUser(name: string, email: string): Promise<User> {
-    const user: User = {
-      id: `usr_${Math.random().toString(36).substring(2, 9)}`,
-      name,
-      email,
-      createdAt: new Date()
-    };
-    this.users.push(user);
-    
-    this.funnelStates.push({
-      userId: user.id,
-      optInCompleted: true,
-      tripwirePurchased: false,
-      coreProductTier: 'none'
-    });
-    
-    return user;
-  }
-};
+// GET /api/users/{user_id}/state
+export interface UserState {
+  user_id: string;
+  email: string;
+  first_name: string;
+  goal: FitnessGoal;
+  baseline_weight_lbs: number;
+  age: number;
+  current_funnel_state: FunnelState;
+  stripe_customer_id: string | null;
+  days_in_funnel: number;
+  created_at: string;
+  last_state_change: string;
+}
+
+// POST /api/ai/generate → 202
+export interface OrchestratorJobResponse {
+  status: string;
+  job_id: string;
+  estimated_latency_sec: number;
+}
+
+// GET /api/ai/jobs/{job_id}
+export interface AIJobResult {
+  workout_plan: string;
+  nutrition_guidelines: string;
+  generated_at: string;
+}
+
+export interface AIJobStatusResponse {
+  job_id: string;
+  status: JobStatus;
+  result?: AIJobResult;
+  error?: string;
+}
+
+// POST /api/checkout/{product}
+export interface CheckoutResponse {
+  session_url: string;
+}
