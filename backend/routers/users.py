@@ -4,7 +4,7 @@ from sqlalchemy import select
 from uuid import UUID
 
 from backend.db.connection import get_db
-from backend.db.models import User
+from backend.db.models import User, FunnelStateFlags, Attribution
 from backend.schemas.models import OptInPayload, OptInResponse, UserStateDB, FunnelState
 from backend.services.email import send_welcome_email
 
@@ -13,12 +13,13 @@ router = APIRouter()
 
 @router.post("/optin", response_model=OptInResponse, status_code=201)
 async def optin(payload: OptInPayload, db: AsyncSession = Depends(get_db)):
-    # Check for existing email to keep endpoint idempotent
+    # Idempotency — same email re-submitting returns current state
     result = await db.execute(select(User).where(User.email == payload.email))
     existing = result.scalar_one_or_none()
     if existing:
         return OptInResponse(user_id=existing.user_id, funnel_state=existing.current_funnel_state)
 
+    # 1. Create user
     user = User(
         email=payload.email,
         first_name=payload.first_name,
@@ -28,10 +29,30 @@ async def optin(payload: OptInPayload, db: AsyncSession = Depends(get_db)):
         current_funnel_state=FunnelState.LEAD,
     )
     db.add(user)
+    await db.flush()  # Get user_id before creating dependent rows
+
+    # 2. Create funnel state flags row
+    flags = FunnelStateFlags(user_id=user.user_id)
+    db.add(flags)
+
+    # 3. Log attribution — always, even if all fields are null
+    attribution = Attribution(
+        user_id=user.user_id,
+        utm_source=payload.utm_source,
+        utm_medium=payload.utm_medium,
+        utm_campaign=payload.utm_campaign,
+        referrer=payload.referrer,
+    )
+    db.add(attribution)
+
     await db.commit()
     await db.refresh(user)
 
-    await send_welcome_email(email=user.email, first_name=user.first_name)
+    # 4. Send welcome email — never blocks response on failure
+    sent = await send_welcome_email(email=user.email, first_name=user.first_name)
+    if sent:
+        flags.welcome_email_sent = True
+        await db.commit()
 
     return OptInResponse(user_id=user.user_id, funnel_state=user.current_funnel_state)
 

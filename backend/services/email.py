@@ -9,8 +9,8 @@ FROM_EMAIL = os.getenv("RESEND_FROM_EMAIL", "pulseai@yourdomain.com")
 PDF_URL = os.getenv("LEAD_MAGNET_PDF_URL", "#")  # Set once PDF is hosted
 
 
-async def send_welcome_email(email: str, first_name: str):
-    """Fires immediately after opt-in. Delivers the free PDF."""
+async def send_welcome_email(email: str, first_name: str) -> bool:
+    """Fires immediately after opt-in. Delivers the free PDF. Returns True on success."""
     try:
         resend.Emails.send({
             "from": FROM_EMAIL,
@@ -25,9 +25,11 @@ async def send_welcome_email(email: str, first_name: str):
                 <p>— RicchelWings</p>
             """,
         })
+        return True
     except Exception as e:
         # Email failure should never crash the opt-in flow
         logger.error("Failed to send welcome email to %s: %s", email, e)
+        return False
 
 
 async def send_purchase_confirmation(email: str, first_name: str, product: str):

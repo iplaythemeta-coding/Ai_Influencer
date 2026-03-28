@@ -21,6 +21,10 @@ export interface OptInPayload {
   goal: FitnessGoal;
   current_weight_lbs: number;
   age: number;
+  utm_source?: string | null;
+  utm_medium?: string | null;
+  utm_campaign?: string | null;
+  referrer?: string | null;
 }
 
 export interface OptInResponse {

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,6 +17,7 @@ const GOALS: { value: FitnessGoal; label: string }[] = [
 
 export default function OptInPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,6 +36,11 @@ export default function OptInPage() {
         goal: data.get("goal") as FitnessGoal,
         current_weight_lbs: parseFloat(data.get("current_weight_lbs") as string),
         age: parseInt(data.get("age") as string, 10),
+        // UTM params — passed automatically from TikTok/IG/X/LinkedIn links
+        utm_source: searchParams.get("utm_source"),
+        utm_medium: searchParams.get("utm_medium"),
+        utm_campaign: searchParams.get("utm_campaign"),
+        referrer: typeof document !== "undefined" ? document.referrer || null : null,
       });
 
       // Store user_id in a cookie for subsequent page loads

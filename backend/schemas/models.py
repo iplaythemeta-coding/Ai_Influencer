@@ -35,6 +35,11 @@ class OptInPayload(BaseModel):
     goal: FitnessGoal
     current_weight_lbs: float = Field(..., gt=70.0, lt=500.0)
     age: int = Field(..., ge=18, le=90)  # Restrict minors for liability
+    # UTM attribution — always capture, even if null
+    utm_source: Optional[str] = None    # 'tiktok' | 'instagram' | 'x' | 'linkedin' | 'skool'
+    utm_medium: Optional[str] = None
+    utm_campaign: Optional[str] = None
+    referrer: Optional[str] = None
 
 
 class OptInResponse(BaseModel):
@@ -85,6 +90,9 @@ class UserStateDB(BaseModel):
     current_funnel_state: FunnelState = FunnelState.LEAD
     stripe_customer_id: Optional[str] = None
     days_in_funnel: int = 0
+    # Skool
+    skool_membership_active: bool = False
+    skool_invite_sent: bool = False
 
     # Telemetry
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
